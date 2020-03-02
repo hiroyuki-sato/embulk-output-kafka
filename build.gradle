@@ -31,14 +31,41 @@ dependencies {
     testCompile "org.embulk:embulk-standards:0.9.22"
     testCompile "org.embulk:embulk-deps-buffer:0.9.22"
 
-    compile "org.apache.kafka:kafka-clients:2.3.0"
+    compile("org.apache.kafka:kafka-clients:2.3.0") {
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
     compile("org.apache.avro:avro:1.9.0") {
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-databind"
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-annotations"
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-core"
+        exclude group: "org.slf4j", module: "slf4j-api"
     }
     compile("io.confluent:kafka-avro-serializer:5.3.0") {
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-databind"
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-annotations"
+        exclude group: "com.fasterxml.jackson.core", module: "jackson-core"
+        exclude group: "org.slf4j", module: "slf4j-api"
     }
 
-    testCompile("com.github.charithe:kafka-junit:4.1.6") {
+    testCompile("com.github.charithe:kafka-junit:4.+") {
+        exclude group: "com.fasterxml.jackson.core"
+        exclude group: "com.fasterxml.jackson.module"
+        exclude group: "com.fasterxml.jackson.dataformat"
+        exclude group: "com.fasterxml.jackson.datatype"
     }
+
+    testCompile "com.fasterxml.jackson.core:jackson-core:2.6.7"
+    testCompile "com.fasterxml.jackson.core:jackson-databind:2.6.7"
+    testCompile "com.fasterxml.jackson.core:jackson-annotations:2.6.7"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7"
+    testCompile("com.fasterxml.jackson.module:jackson-module-scala_2.12:2.6.7.1") {
+        exclude group: "com.fasterxml.jackson.module"
+    }
+    testCompile "com.fasterxml.jackson.module:jackson-module-paranamer:2.6.7"
+    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.6.7"
+    testCompile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7"
+
+
 }
 
 task classpath(type: Copy, dependsOn: ["jar"]) {
